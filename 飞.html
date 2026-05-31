@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>岳飞生平完整时间轴 | 附诗词链接</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "SimSun", "宋体", serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f5f0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #8b0000;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            color: #8b0000;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+        }
+        
+        /* 时间轴中心线 */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background-color: #8b0000;
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+        
+        /* 时间轴节点 */
+        .timeline-item {
+            display: flex;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        /* 左侧时间节点 */
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+        
+        /* 右侧时间节点 */
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        /* 时间点内容 */
+        .timeline-content {
+            width: 45%;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            border-left: 5px solid #8b0000;
+        }
+        
+        /* 左侧节点箭头 */
+        .timeline-item:nth-child(odd) .timeline-content::after {
+            content: '';
+            position: absolute;
+            right: -15px;
+            top: 25px;
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 15px solid white;
+        }
+        
+        /* 右侧节点箭头 */
+        .timeline-item:nth-child(even) .timeline-content::after {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 25px;
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-right: 15px solid white;
+        }
+        
+        /* 时间点圆圈标记 */
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background-color: #8b0000;
+            border: 4px solid #f8f5f0;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+        
+        /* 年份样式 */
+        .year {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #8b0000;
+            margin-bottom: 5px;
+        }
+        
+        /* 年龄/时期样式 */
+        .age {
+            font-size: 1rem;
+            color: #666;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        /* 事件描述 */
+        .events {
+            font-size: 1rem;
+        }
+        
+        .events ul {
+            padding-left: 20px;
+        }
+        
+        .events li {
+            margin-bottom: 6px;
+        }
+        
+        /* 历史时期标记 */
+        .period {
+            display: inline-block;
+            background-color: #F5F0E6;
+            color: #8B7355;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        /* 诗词链接区域 */
+        .poem-links {
+            margin-top: 60px;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #2e5a2e;
+        }
+        
+        .poem-links h2 {
+            color: #2e5a2e;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .poem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .poem-card {
+            background-color: #f9f7f3;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 4px solid #8B7355;
+        }
+        
+        .poem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+        
+        .poem-card h3 {
+            color: #2e5a2e;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .poem-card p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .poem-link {
+            display: inline-block;
+            background-color: #8b0000;
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .poem-link:hover {
+            background-color: #a00;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item {
+                flex-direction: row !important;
+                margin-left: 40px;
+            }
+            
+            .timeline-content {
+                width: 100%;
+            }
+            
+            .timeline-marker {
+                left: 20px;
+            }
+            
+            .timeline-item:nth-child(odd) .timeline-content::after,
+            .timeline-item:nth-child(even) .timeline-content::after {
+                left: -15px;
+                right: auto;
+                border-right: 15px solid white;
+                border-left: none;
+            }
+            
+            .poem-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* 特殊标记 */
+        .important {
+            color: #b22222;
+            font-weight: bold;
+        }
+        
+        /* 时间轴节点悬停效果 */
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>岳飞生平完整时间轴</h1>
+            <p class="subtitle">1103年 - 1142年 | 基于《岳飞年表》完整整理</p>
+        </header>
+        
+        <div class="timeline">
+            <!-- 1103年 出生 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1103年</div>
+                    <div class="age">一岁</div>
+                    <div class="period">宋徽宗崇宁二年</div>
+                    <div class="events">
+                        <ul>
+                            <li>二月十五日，生于河北西路相州汤阴县永和乡孝悌里。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1105年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1105年</div>
+                    <div class="age">三岁</div>
+                    <div class="period">崇宁四年</div>
+                    <div class="events">
+                        <ul>
+                            <li>黄河在内黄决口，洪水包围汤阴，母姚氏抱飞坐瓮中，随水漂流，幸免于难。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1113年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1113年</div>
+                    <div class="age">十一岁</div>
+                    <div class="period">政和三年</div>
+                    <div class="events">
+                        <ul>
+                            <li>学射于周同，能左右射。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1118年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1118年</div>
+                    <div class="age">十六岁</div>
+                    <div class="period">重和元年</div>
+                    <div class="events">
+                        <ul>
+                            <li>娶妻刘氏。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1119年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1119年</div>
+                    <div class="age">十七岁</div>
+                    <div class="period">宣和元年</div>
+                    <div class="events">
+                        <ul>
+                            <li>长子岳云生。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1122年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1122年</div>
+                    <div class="age">二十岁</div>
+                    <div class="period">宣和四年</div>
+                    <div class="events">
+                        <ul>
+                            <li>应募充"敢战士"，平盗匪陶俊、贾进。</li>
+                            <li>父岳和病故，回家守孝。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1124年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1124年</div>
+                    <div class="age">二十二岁</div>
+                    <div class="period">宣和六年</div>
+                    <div class="events">
+                        <ul>
+                            <li>投平定军，为效用士，后升偏校。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1126年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1126年</div>
+                    <div class="age">二十四岁</div>
+                    <div class="period">靖康元年</div>
+                    <div class="events">
+                        <ul>
+                            <li>从平定军突围回相州。</li>
+                            <li>投大元帅府，为承信郎。</li>
+                            <li>转保义郎，补进义副尉。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1127年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1127年</div>
+                    <div class="age">二十五岁</div>
+                    <div class="period">建炎元年</div>
+                    <div class="events">
+                        <ul>
+                            <li>正月，与金军战于开德府。</li>
+                            <li>二月，战于曹州，进驻柏林镇。</li>
+                            <li>六月、七月，上书要求抗金，被革职。</li>
+                            <li>八月，投奔张所，充中军统领，升任统制。</li>
+                            <li>九月，从王彦转战新乡县等地，后孤军苦斗于太行山。</li>
+                            <li>冬，投归宗泽。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1128年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1128年</div>
+                    <div class="age">二十六岁</div>
+                    <div class="period">建炎二年</div>
+                    <div class="events">
+                        <ul>
+                            <li>正月，战于胙城、黑龙潭、汜水关。</li>
+                            <li>二月，战于竹芦渡。</li>
+                            <li>七月，宗泽病逝，归杜充。</li>
+                            <li>八月，与王善战于清河。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1129年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1129年</div>
+                    <div class="age">二十七岁</div>
+                    <div class="period">建炎三年</div>
+                    <div class="events">
+                        <ul>
+                            <li>正月，与张用、王善战于开封。</li>
+                            <li>七月，随杜充撤至建康府。</li>
+                            <li>十月，与戚方战于广德军。</li>
+                            <li>十一月，与金兵战于马家渡。</li>
+                            <li>十二月，屯军宜兴县张渚镇。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1130年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1130年</div>
+                    <div class="age">二十八岁</div>
+                    <div class="period">建炎四年</div>
+                    <div class="events">
+                        <ul>
+                            <li>二月，进驻宜兴县张渚镇。</li>
+                            <li>四月、五月，<span class="important">收复建康府</span>。</li>
+                            <li>七月，迁通、泰州镇抚使，泰州兼知。</li>
+                            <li>十一月，三子岳霖生。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1131年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1131年</div>
+                    <div class="age">二十九岁</div>
+                    <div class="period">绍兴元年</div>
+                    <div class="events">
+                        <ul>
+                            <li>讨李成，招降张用。</li>
+                            <li>迁神武右副军统制。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1132年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1132年</div>
+                    <div class="age">三十岁</div>
+                    <div class="period">绍兴二年</div>
+                    <div class="events">
+                        <ul>
+                            <li>讨曹成，屯江州。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1133年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1133年</div>
+                    <div class="age">三十一岁</div>
+                    <div class="period">绍兴三年</div>
+                    <div class="events">
+                        <ul>
+                            <li>平定吉、虔州盗匪。</li>
+                            <li>迁神武后军统制。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1134年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1134年</div>
+                    <div class="age">三十二岁</div>
+                    <div class="period">绍兴四年</div>
+                    <div class="events">
+                        <ul>
+                            <li>五月至七月，<span class="important">复襄汉六郡</span>，后移屯鄂州。</li>
+                            <li>八月，授从二品清远军节度使，任荆湖北路、荆州、襄州、潭州制置使。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1135年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1135年</div>
+                    <div class="age">三十三岁</div>
+                    <div class="period">绍兴五年</div>
+                    <div class="events">
+                        <ul>
+                            <li>二月，授镇宁、崇信军节度使，升神武后军都统制。</li>
+                            <li>四月至六月，<span class="important">平定杨么叛乱</span>。</li>
+                            <li>九月，加检校少保。</li>
+                            <li>十二月，升荆湖北路、襄阳府路招讨使。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1136年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1136年</div>
+                    <div class="age">三十四岁</div>
+                    <div class="period">绍兴六年</div>
+                    <div class="events">
+                        <ul>
+                            <li>三月，母姚氏卒。</li>
+                            <li>七月，屯襄阳。</li>
+                            <li>八月，进兵伊阳、洛阳等地。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1137年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1137年</div>
+                    <div class="age">三十五岁</div>
+                    <div class="period">绍兴七年</div>
+                    <div class="events">
+                        <ul>
+                            <li>二月，拜太尉，升宣抚使。</li>
+                            <li>四月，因并统淮西等军，大举北伐计划受阻，怒而弃军。</li>
+                            <li>八月，复职。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1139年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1139年</div>
+                    <div class="age">三十七岁</div>
+                    <div class="period">绍兴九年</div>
+                    <div class="events">
+                        <ul>
+                            <li>宋金和议成，岳飞力反和议。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1140年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1140年</div>
+                    <div class="age">三十八岁</div>
+                    <div class="period">绍兴十年</div>
+                    <div class="events">
+                        <ul>
+                            <li>金朝毁约南侵。</li>
+                            <li>六月，加正一品少保。</li>
+                            <li>六月至七月，<span class="important">连复蔡州、颍昌府、淮宁府、郑州、汝州、虢州、河南府等地</span>。</li>
+                            <li><span class="important">大败金军于郾城县和颍昌府</span>，进军朱仙镇。</li>
+                            <li>七月，奉诏班师。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1141年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1141年</div>
+                    <div class="age">三十九岁</div>
+                    <div class="period">绍兴十一年</div>
+                    <div class="events">
+                        <ul>
+                            <li>二月、三月，援淮西。</li>
+                            <li>四月，授枢密副使，<span class="important">罢兵权</span>。</li>
+                            <li>八月，罢枢密副使。</li>
+                            <li>十月，入大理寺狱。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 1142年 -->
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="year">1142年</div>
+                    <div class="age">三十九岁</div>
+                    <div class="period">绍兴十二年</div>
+                    <div class="events">
+                        <ul>
+                            <li><span class="important">十二月二十九日，遇害于狱中</span>，年三十九。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 岳飞诗词链接区域 -->
+        <div class="poem-links">
+            <h2>岳飞诗词作品链接</h2>
+            <p style="text-align: center; margin-bottom: 20px; color: #666;">点击下方链接查看岳飞相关诗词作品</p>
+            
+            <div class="poem-grid">
+                <div class="poem-card">
+                    <h3>《小重山·昨夜寒蛩不住鸣》</h3>
+                    <p>这首词表达了岳飞在抗金事业受挫时的苦闷与孤独，风格婉约含蓄，与《满江红》的豪放形成鲜明对比。</p>
+                    <a href="https://baike.baidu.com/item/%E5%B0%8F%E9%87%8D%E5%B1%B1%C2%B7%E6%98%A8%E5%A4%9C%E5%AF%92%E8%9B%A9%E4%B8%8D%E4%BD%8F%E9%B8%A3" target="_blank" class="poem-link">查看全词及赏析</a>
+                </div>
+                
+                <div class="poem-card">
+                    <h3>《满江红·写怀》</h3>
+                    <p>岳飞最著名的词作，"怒发冲冠，凭栏处、潇潇雨歇"，表达了对侵略者的仇恨和收复失地的决心。</p>
+                    <a href="https://baike.baidu.com/item/%E6%BB%A1%E6%B1%9F%E7%BA%A2%C2%B7%E5%86%99%E6%80%80" target="_blank" class="poem-link">查看全词及赏析</a>
+                </div>
+                
+                <div class="poem-card">
+                    <h3>《满江红·登黄鹤楼有感》</h3>
+                    <p>另一首《满江红》，"遥望中原，荒烟外，许多城郭"，表达了登楼远望，感慨国破家亡的悲愤之情。</p>
+                    <a href="https://baike.baidu.com/item/%E6%BB%A1%E6%B1%9F%E7%BA%A2%C2%B7%E7%99%BB%E9%BB%84%E9%B9%A4%E6%A5%BC%E6%9C%89%E6%84%9F" target="_blank" class="poem-link">查看全词及赏析</a>
+                </div>
+                
+                <div class="poem-card">
+                    <h3>《池州翠微亭》</h3>
+                    <p>岳飞的七言绝句，"经年尘土满征衣，特特寻芳上翠微"，在戎马生涯中寻得片刻闲适，展现其文武双全的一面。</p>
+                    <a href="https://baike.baidu.com/item/%E6%B1%A0%E5%B7%9E%E7%BF%A0%E5%BE%AE%E4%BA%AD" target="_blank" class="poem-link">查看全诗及赏析</a>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; color: #666; font-size: 0.9rem;">
+                <p>注：以上链接将跳转到百度百科相关页面，可查看诗词全文、注释、译文及详细赏析。</p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>本时间轴基于《岳飞年表》完整整理 | 使用宋体字体呈现</p>
+            <p>包含岳飞生平所有重要事件及代表作品链接</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 添加时间轴节点动画效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            timelineItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                item.style.transitionDelay = (index * 0.1) + 's';
+                
+                observer.observe(item);
+            });
+            
+            // 为诗词卡片添加点击效果
+            const poemCards = document.querySelectorAll('.poem-card');
+            poemCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.tagName !== 'A') {
+                        const link = this.querySelector('.poem-link');
+                        if (link) {
+                            window.open(link.href, '_blank');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
